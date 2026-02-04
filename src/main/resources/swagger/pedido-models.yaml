@@ -1,0 +1,40 @@
+openapi: 3.0.0
+info:
+  title: Pedido Models
+  version: 1.0.0
+  description: Modelos de dados de domínio dos pedidos.
+
+components:
+  schemas:
+    Pedido:
+      type: object
+      properties:
+        id:
+          type: string
+        cliente:
+          $ref: 'models.yaml#/components/schemas/Cliente'
+        itens:
+          type: array
+          items:
+            $ref: "#/components/schemas/PedidoItem"
+        codfilial:
+          type: string
+
+    PedidoItem:
+      type: object
+      properties:
+        id:
+          type: string
+        item:
+          type: integer
+        produto:
+          $ref: 'models.yaml#/components/schemas/Produto'
+        qtde:
+          type: number
+          format: double
+        precoUnitario:
+          type: number
+          format: double
+        codfilial:
+          type: string
+

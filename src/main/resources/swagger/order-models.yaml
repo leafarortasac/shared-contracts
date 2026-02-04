@@ -1,0 +1,77 @@
+openapi: 3.0.0
+info:
+  title: Pedido Models
+  version: 1.0.0
+  description: Modelos de dados de domínio dos pedidos.
+
+components:
+  schemas:
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        pedidoOriginalId:
+          type: string
+        clienteId:
+          type: string
+        total:
+          type: number
+          format: double
+        itens:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        dataProcessamento:
+          type: string
+          format: date-time
+        codfilial:
+          type: string
+
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+        item:
+          type: integer
+        produtoId:
+          type: string
+        qtde:
+          type: number
+          format: double
+        precoUnitario:
+          type: number
+          format: double
+        subTotal:
+          type: number
+          format: double
+        codfilial:
+          type: string
+
+    OrderStatus:
+      type: string
+      enum: [ CALCULADO, ERRO ]
+      description: Status do pedido
+
+    OrderDocument:
+      type: object
+      properties:
+        order:
+          $ref: "#/components/schemas/Order"
+
+    OrderDocumentResponse:
+      type: object
+      properties:
+        registros:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderDocument"
+        pagina:
+          $ref: 'models.yaml#/components/schemas/Pagina'
+
+
+
+
