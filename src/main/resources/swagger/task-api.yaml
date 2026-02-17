@@ -1,0 +1,127 @@
+openapi: 3.0.0
+info:
+  title: Order Management API
+  version: 1.0.0
+  description: API de crud das tasks.
+
+paths:
+  /v1/tasks:
+    get:
+      summary: ''
+      description: ''
+      operationId: listTaks
+      tags:
+        - Task
+      parameters:
+        - name: id
+          in: query
+          description: id da task
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: usuarioId
+          in: query
+          description: usuario id
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: status da task
+          required: false
+          schema:
+            $ref: 'task-models.yaml#/components/schemas/Status'
+        - name: dataCriacaoDe
+          in: query
+          description: data de criacao de
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: dataCriacaoAte
+          in: query
+          description: data de criacao ate
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: Quantidade de registros (padrão 10)
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: unPaged
+          in: query
+          description: Se true, ignora o limite e traz todos os dados
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Lista de tasks.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: 'task-models.yaml#/components/schemas/taskResponse'
+
+    post:
+      tags:
+        - Task
+      summary: ''
+      description: ''
+      operationId: postTasks
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'task-models.yaml#/components/schemas/Task'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+
+    put:
+      tags:
+        - Task
+      summary: ''
+      description: ''
+      operationId: putTasks
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'task-models.yaml#/components/schemas/Task'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+
+    delete:
+      tags:
+        - Task
+      summary: ''
+      description: ''
+      operationId: deleteTasks
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'task-models.yaml#/components/schemas/Task'
+        required: true
+      responses:
+        '200':
+          description: successful operation

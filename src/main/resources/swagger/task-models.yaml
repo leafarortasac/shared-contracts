@@ -1,0 +1,48 @@
+openapi: 3.0.0
+info:
+  title: IAM Domain Models
+  version: 1.0.0
+  description: Modelos de dados consolidados para as tasks.
+
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        titulo:
+          type: string
+        descricao:
+          type: string
+        status:
+          $ref: "#/components/schemas/Status"
+        dataCriacao:
+          type: string
+          format: date-time
+        usuarioId:
+          type: string
+        operacao:
+          $ref: "#/components/schemas/Operacao"
+
+    Status:
+      type: string
+      enum: [ PENDENTE, EM_ANDAMENTO, CONCLUIDA ]
+      description: Status da task
+
+    Operacao:
+      type: string
+      enum: [ INCLUSAO, ALTERACAO ]
+      default: INCLUSAO
+      description: Status da task
+
+    taskResponse:
+      type: object
+      properties:
+        registros:
+          type: array
+          items:
+            $ref: "#/components/schemas/Task"
+        pagina:
+          $ref: 'models.yaml#/components/schemas/Pagina'

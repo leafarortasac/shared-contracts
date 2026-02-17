@@ -1,0 +1,75 @@
+openapi: 3.0.0
+info:
+  title: Notification API
+  version: 1.0.0
+  description: API para recepção de notificações.
+
+paths:
+  /v1/notifications:
+    get:
+      summary: ''
+      operationId: listNotifications
+      tags:
+        - Notifications
+      parameters:
+        - name: taskId
+          in: query
+          description: task id
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: usuarioId
+          in: query
+          description: usuario id
+          required: false
+          schema:
+            type: string
+        - name: lida
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: limit
+          in: query
+          description: Quantidade de registros (padrão 10)
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: unpaged
+          in: query
+          description: Se true, ignora o limite e traz todos os dados
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Lista de notificações.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: 'notification-models.yaml#/components/schemas/notificationDocumentResponse'
+
+    put:
+      tags:
+        - Notifications
+      summary: ''
+      description: ''
+      operationId: putNotifications
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'notification-models.yaml#/components/schemas/Notification'
+        required: true
+      responses:
+        '200':
+          description: successful operation

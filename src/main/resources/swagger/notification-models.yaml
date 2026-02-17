@@ -1,0 +1,54 @@
+openapi: 3.0.0
+info:
+  title: Notification Models
+  version: 1.0.0
+  description: Modelos de dados de domínio dos pedidos.
+
+components:
+  schemas:
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+        taskId:
+          type: string
+          format: UUID
+        usuarioId:
+          type: string
+        titulo:
+          type: string
+        mensagem:
+          type: string
+        status:
+          $ref: "#/components/schemas/notificacaoStatus"
+        lida:
+          type: boolean
+        dataNotificacao:
+          type: string
+          format: date-time
+
+    notificacaoStatus:
+      type: string
+      enum: [ INCLUSAO, ALTERACAO ]
+      description: Status da notificação
+
+    notificationDocument:
+      type: object
+      properties:
+        notification:
+          $ref: "#/components/schemas/Notification"
+
+    notificationDocumentResponse:
+      type: object
+      properties:
+        registros:
+          type: array
+          items:
+            $ref: "#/components/schemas/notificationDocument"
+        pagina:
+          $ref: 'models.yaml#/components/schemas/Pagina'
+
+
+
+
