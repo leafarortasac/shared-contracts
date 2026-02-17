@@ -1,0 +1,147 @@
+openapi: 3.0.0
+info:
+  title: IAM Token Service
+  version: 1.0.0
+  description: API para geração de tokens, autenticação e registro de usuários.
+
+paths:
+  /v1/usuario/register:
+    post:
+      summary: ''
+      description: ''
+      operationId: criaUsuario
+      tags:
+        - Usuarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'iam-models.yaml#/components/schemas/Usuario'
+      responses:
+        '201':
+          description: Usuário criado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: 'iam-models.yaml#/components/schemas/Usuario'
+        '400':
+          description: Dados inválidos ou e-mail já cadastrado.
+          content:
+            application/json:
+              schema:
+                $ref: 'iam-models.yaml#/components/schemas/ErrorResponse'
+
+  /v1/usuario/login:
+    get:
+      summary: ''
+      operationId: getLogin
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: query
+          description: id do login
+          required: false
+          schema:
+            type: string
+        - name: nome
+          in: query
+          description: nome do login
+          required: false
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: email do login
+          required: false
+          schema:
+            type: string
+        - name: role
+          in: query
+          description: role do login
+          required: false
+          schema:
+            $ref: 'iam-models.yaml#/components/schemas/UserRole'
+        - name: limit
+          in: query
+          description: Quantidade de registros (padrão 10)
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: unPaged
+          in: query
+          description: Se true, ignora o limite e traz todos os dados
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Lista de pedidos calculados.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: 'iam-models.yaml#/components/schemas/usuarioDocumentResponse'
+
+    post:
+      summary: ''
+      description: ''
+      operationId: login
+      tags:
+        - Usuarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'iam-models.yaml#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login bem-sucedido.
+          content:
+            application/json:
+              schema:
+                $ref: 'iam-models.yaml#/components/schemas/AuthResponse'
+        '401':
+          description: Email ou senha inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: 'iam-models.yaml#/components/schemas/ErrorResponse'
+
+  /v1/auth/token:
+    post:
+      summary: Gera um token JWT de acesso (Machine-to-Machine)
+      description: Valida as credenciais do cliente (ID e Secret) para emitir um Bearer Token.
+      operationId: obterToken
+      tags:
+        - Autenticacao
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [clientId, clientSecret]
+              properties:
+                clientId:
+                  type: string
+                clientSecret:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Token gerado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: 'iam-models.yaml#/components/schemas/AuthResponse'
+        '401':
+          description: Credenciais inválidas.
+          content:
+            application/json:
+              schema:
+                $ref: 'iam-models.yaml#/components/schemas/ErrorResponse'

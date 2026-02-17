@@ -1,0 +1,60 @@
+openapi: 3.0.0
+info:
+  title: Order Management API
+  version: 1.0.0
+  description: API para recepção, cálculo e disponibilização de pedidos (Integração Sistemas A e B).
+
+paths:
+  /v1/orders:
+    get:
+      summary: Consulta pedidos processados para o Sistema B.
+      operationId: listOrders
+      tags:
+        - Order
+      parameters:
+        - name: codfilial
+          in: query
+          description: codigo da filial
+          required: false
+          schema:
+            type: string
+        - name: pedidoOriginalId
+          in: query
+          description: order id
+          required: false
+          schema:
+            type: string
+        - name: clienteId
+          in: query
+          description: client id
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: status do atendimento
+          required: false
+          schema:
+            $ref: 'order-models.yaml#/components/schemas/OrderStatus'
+        - name: limit
+          in: query
+          description: Quantidade de registros (padrão 10)
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: unpaged
+          in: query
+          description: Se true, ignora o limite e traz todos os dados
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Lista de pedidos calculados.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: 'order-models.yaml#/components/schemas/OrderDocumentResponse'

@@ -1,0 +1,26 @@
+openapi: 3.0.0
+info:
+  title: Order Management API
+  version: 1.0.0
+  description: API para recepção, cálculo e disponibilização de pedidos (Integração Sistemas A e B).
+
+paths:
+  /v1/pedidos:
+    post:
+      summary: Recebe pedidos do Sistema A para processamento e cálculo.
+      operationId: recebePedidos
+      tags:
+        - Pedidos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'pedido-models.yaml#/components/schemas/Pedido'
+      responses:
+        '202':
+          description: Pedido recebido.
+        '401':
+          description: Não autorizado.

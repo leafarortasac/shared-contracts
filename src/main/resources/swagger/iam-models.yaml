@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: IAM Domain Models
+  version: 1.0.0
+  description: Modelos de dados consolidados para Autenticação e Gestão de Usuários.
+
+components:
+  schemas:
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        nome:
+          type: string
+        email:
+          type: string
+          format: email
+          writeOnly: true
+        senha:
+          type: string
+          format: password
+        role:
+          $ref: '#/components/schemas/UserRole'
+
+    UserRole:
+      type: string
+      enum: [ADMIN, USER]
+      description: "Papéis de acesso no sistema"
+
+    usuarioDocument:
+      type: object
+      properties:
+        usuario:
+          $ref: "#/components/schemas/Usuario"
+
+    usuarioDocumentResponse:
+      type: object
+      properties:
+        registros:
+          type: array
+          items:
+            $ref: "#/components/schemas/usuarioDocument"
+        pagina:
+          $ref: 'models.yaml#/components/schemas/Pagina'
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - senha
+      properties:
+        email:
+          type: string
+        senha:
+          type: string
+          format: password
+
+    # --- Modelos de Response (Saída) ---
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: "O token JWT gerado"
+        tokenType:
+          type: string
+          example: "Bearer"
+        expiresIn:
+          type: integer
+          example: 3600
+        usuario:
+          $ref: '#/components/schemas/Usuario'
+
+    ErrorResponse:
+      type: object
+      properties:
+        mensagem:
+          type: string
+        status:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time

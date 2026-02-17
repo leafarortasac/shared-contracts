@@ -1,0 +1,36 @@
+openapi: 3.0.0
+info:
+  title: Enterprise Business Models
+  version: 1.0.0
+  description: Modelos de dados de domínio comuns que podem ser usados em qualquer api.
+
+components:
+  schemas:
+    Produto:
+      type: object
+      properties:
+        id:
+          type: string
+        codigo:
+          type: string
+        nome:
+          type: string
+
+    Cliente:
+      type: object
+      properties:
+        id:
+          type: string
+        codigo:
+          type: string
+        nome:
+          type: string
+
+    Pagina:
+      type: object
+      properties:
+        totalPaginas:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
